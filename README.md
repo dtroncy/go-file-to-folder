@@ -21,3 +21,9 @@ Root Folder
    |
    |-- file2.txt
 ````
+
+To use it, copy script to root folder and launch it :
+
+````
+./go-file-to-folder
+````
