@@ -26,7 +26,7 @@ func main() {
 		if !element.IsDir() {
 			fmt.Println("Traitement du fichier : " + element.Name())
 			fmt.Println("Fichier sans extension : " + strings.TrimSuffix(element.Name(), path.Ext(element.Name())))
-			os.Mkdir(strings.TrimSuffix(element.Name(), path.Ext(element.Name())), 666)
+			os.Mkdir(strings.TrimSuffix(element.Name(), path.Ext(element.Name())), 770)
 		}
 
 	}
