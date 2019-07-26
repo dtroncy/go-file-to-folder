@@ -1,14 +1,16 @@
 package main
 
 import (
-	"fmt"
 	"log"
 	"os"
 	"path"
+	"path/filepath"
 	"strings"
 )
 
 func main() {
+
+	log.Println("Reading root folder content")
 	f, err := os.Open(".")
 	if err != nil {
 		log.Fatal(err)
@@ -24,9 +26,30 @@ func main() {
 	for _, element := range elements {
 
 		if !element.IsDir() {
-			fmt.Println("Traitement du fichier : " + element.Name())
-			fmt.Println("Fichier sans extension : " + strings.TrimSuffix(element.Name(), path.Ext(element.Name())))
-			os.Mkdir(strings.TrimSuffix(element.Name(), path.Ext(element.Name())), 770)
+
+			log.Println("This element is not a directory")
+
+			// Get file path
+			filePath, err := filepath.Abs(filepath.Dir(element.Name()))
+			if err != nil {
+				log.Fatal(err)
+			}
+
+			// Get filename without extension
+			fileNameWithoutExtension := strings.TrimSuffix(element.Name(), path.Ext(element.Name()))
+
+			log.Println("    File name : " + element.Name())
+			log.Println("    File name without extension : " + fileNameWithoutExtension)
+			log.Println("    File path : " + filePath)
+
+			log.Println("    Folder creation")
+			// Folder creation with filename (without extension)
+			os.Mkdir(fileNameWithoutExtension, 0770)
+
+			log.Println("    Moving file from " + filePath + "/" + element.Name() + " to " + filePath + "/" + fileNameWithoutExtension + "/" + element.Name())
+			// Move file from root folder to newly created folder
+			os.Rename(filePath+"/"+element.Name(), filePath+"/"+fileNameWithoutExtension+"/"+element.Name())
+
 		}
 
 	}
